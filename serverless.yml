@@ -1,0 +1,126 @@
+org: aigendrug
+service: drugvlab
+
+frameworkVersion: "3"
+
+custom:
+  region: "ap-northeast-2"
+  userId: "473130344367"
+  tf_outputs: ${file(./terraform/cognito/terraform_outputs.json)}
+  wsApiName: drugvlab-websocket-${sls:stage}
+
+provider:
+  name: aws
+  runtime: provided.al2
+  stage: llm
+  region: ap-northeast-2
+  deploymentBucket:
+    name: deployment-bucket-serverless
+  deploymentPrefix: serverless
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - ecr:GetDownloadUrlForLayer
+            - ecr:BatchGetImage
+            - ecr:GetAuthorizationToken
+          Resource:
+            - arn:aws:ecr:ap-northeast-2:473130344367:repository/drugvlab_llm
+        - Effect: Allow
+          Action:
+            - s3:*
+            - s3-object-lambda:*
+          Resource:
+            - arn:aws:s3:::drugvlab-bucket
+            - arn:aws:s3:::drugvlab-bucket/*
+        - Effect: Allow
+          Action:
+            - execute-api:ManageConnections
+            - execute-api:Invoke
+          Resource:
+            - arn:aws:execute-api:${aws:region}:${aws:accountId}:*/${sls:stage}/*
+        - Effect: Allow
+          Action:
+            - bedrock:InvokeModel
+            - bedrock:InvokeModelWithResponseStream
+          Resource:
+            - "*"
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:GetItem
+            - dynamodb:DeleteItem
+          Resource:
+            - !GetAtt ConnectionsTable.Arn
+
+package:
+  patterns:
+    - src/**
+    - handler.py
+    - public/**
+    - "!**/*.csv"
+    - "!.gitignore"
+    - "!.git/**"
+    - "!.vscode/**"
+    - "!terraform/**"
+    - "!test/**"
+    - "faiss_index/**"
+    - "data/**"
+
+functions:
+  webSocketConnect:
+    handler: src/websocket/connect.handler
+    runtime: python3.11
+    events:
+      - websocket:
+          route: $connect
+
+  webSocketDisconnect:
+    handler: src/websocket/disconnect.handler
+    runtime: python3.11
+    events:
+      - websocket:
+          route: $disconnect
+
+  webSocketDefault:
+    handler: src/websocket/default.handler
+    runtime: python3.11
+    events:
+      - websocket:
+          route: $default
+
+  drugvlabLLM:
+    timeout: 30
+    image:
+      uri: 473130344367.dkr.ecr.ap-northeast-2.amazonaws.com/drugvlab_llm:latest
+    events:
+      - websocket:
+          route: query
+
+resources:
+  Resources:
+    ConnectionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:service}-connections-${sls:stage}
+        AttributeDefinitions:
+          - AttributeName: connectionId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: connectionId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TimeToLiveSpecification:
+          AttributeName: ttl
+          Enabled: true
+
+  Outputs:
+    WebsocketApiEndpoint:
+      Description: "WebSocket API Endpoint"
+      Value: 
+        Fn::Join:
+          - ""
+          - - "wss://"
+            - Ref: WebsocketsApi
+            - ".execute-api.${aws:region}.amazonaws.com/${sls:stage}"

@@ -1,0 +1,12 @@
+{
+  "cognito_user_pool_arn": {
+    "sensitive": false,
+    "type": "string",
+    "value": "arn:aws:cognito-idp:ap-northeast-2:473130344367:userpool/ap-northeast-2_MzBATKRj1"
+  },
+  "cognito_user_pool_id": {
+    "sensitive": false,
+    "type": "string",
+    "value": "ap-northeast-2_MzBATKRj1"
+  }
+}

@@ -1,0 +1,10 @@
+{
+    "llm": {
+        "s3": {
+            "tool": {
+                "bucket_name": "drugvlab-bucket",
+                "path": "data/embeddings/"
+            }
+        }
+    }
+}

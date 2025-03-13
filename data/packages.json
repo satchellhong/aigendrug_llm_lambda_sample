@@ -1,0 +1,75 @@
+{
+    "packages": [
+        {
+            "name": "ChemMining",
+            "description": "Efficiently explores the chemical space, identifying high-efficacy compounds and providing priority rankings utilizing Deep Learning, Network Exploration, and Cheminformatics. Our innovative approach allows for the discovery of compounds with unique scaffolds, enhancing patentability and diversity.",
+            "use cases": [
+                "Discovery of hit compounds for small molecule kinase inhibitors.",
+                "Identification of hit compounds for pharmacological chaperones."
+            ],
+            "keywords": [
+                "chemical space",
+                "deep learning",
+                "cheminformatics"
+            ]
+        },
+        {
+            "name": "ChemGen",
+            "description": "Innovates compound design using protein 3D structures and experimental data. Our Generative AI models create molecules binding to protein pockets. With Network Propagation technology, we efficiently select high-efficacy, drug-like compounds with prioritized precisions.",
+            "use cases": [
+                "Optimization of pharmacological chaperone lead compounds.",
+                "Development of optimal compound formulations."
+            ],
+            "keywords": [
+                "compound design",
+                "generative AI",
+                "drug-like compounds"
+            ]
+        },
+        {
+            "name": "ChemTune",
+            "description": "Specializes in drug repurposing and synergy analysis using biomedical knowledge networks. Our advanced biomedical knowledge graph connects drug-disease spaces with Protein-Protein Interaction (PPI) networks. Skip-Gram encoder models analyze relationships, and 'Teleportation' in random walks ensures unbiased exploration for optimal drug repurposing outcomes.",
+            "use cases": [
+                "Drug repurposing for new indications",
+                "Prediction of small molecule inhibitor combinations for repurposing",
+                "Identification of novel drug-disease connections"
+            ],
+            "keywords": [
+                "drug repurposing",
+                "synergy analysis",
+                "biomedical knowledge networks",
+                "PPI networks"
+            ]
+        },
+        {
+            "name": "ChemTox",
+            "description": "Analyzes in vivo toxicity and side effects based on transcriptome data and compound structures. We identify crucial toxicophores, predict toxicity via CYP and hERG analysis, and offer insights into six hepatotoxicity mechanisms. Also, we forecast compound side effect frequencies based on molecular structure, similarity, and target protein data.",
+            "use cases": [
+                "Prediction of kinase off-target effects.",
+                "Assessment of compound toxicity profiles"
+            ],
+            "keywords": [
+                "toxicity analysis",
+                "side effects prediction",
+                "hepatotoxicity"
+            ]
+        },
+        {
+            "name": "ChemProtac",
+            "description": "Elevates the potential of candidate inhibitors by expertly designing tailored PROTAC solutions. By integrating existing assay data with advanced protein structure prediction and docking simulation models, our model refines the search for optimal linkers in the development and evaluation of de novo PROTAC leads.",
+            "use cases": [
+                "Explore innovative PROTAC linker designs.",
+                "Predicting protein inhibition efficacy for existing PROTACs."
+            ],
+            "keywords": [
+                "PROTAC",
+                "protein structure prediction",
+                "docking simulation"
+            ]
+        }
+    ],
+    "appendix": {
+        "ADMET": "Absorption, Distribution, Metabolism, Excretion, and Toxicity.",
+        "PROTAC": "PROteolysis TArgeting Chimera, a class of bispecific molecules designed to degrade specific proteins."
+    }
+}
